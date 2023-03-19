@@ -28,7 +28,7 @@ class Game:
         self.wx, self.wy = pygame.display.get_surface().get_size()  # Get window resolution
         
         pygame.display.set_caption("Breakout Game")
-        self.font = pygame.font.Font('freesansbold.ttf', 32)
+        self.font = pygame.font.Font('freesansbold.ttf', 20)
         self.running = True
         self.tick_length = 1 / 60
         self.BACKGROUND_COLOUR = (20, 20, 50)
@@ -76,6 +76,7 @@ class Game:
                 self.wx, self.wy = pygame.display.get_surface().get_size()
                 self.end_surface = pygame.Surface((self.wx, self.wy))  # Endscreen fix
                 self.end_surface.fill((255, 0, 0))
+                self.font = pygame.font.Font('freesansbold.ttf', int(self.wy/24))
                 
     def game_start(self):
         
@@ -209,9 +210,11 @@ class Game:
         pygame.draw.rect(self.screen, pygame.Color(255, 255, 255),
         (self.platform_p * self.wx, self.wy - 2 * (self.wy / 20), self.platform_width * self.wx, self.wy / 20))
 
-        self.scoretext = self.font.render("Score : " + str(math.floor(self.score)), True, (255, 255, 255))
-        self.screen.blit(self.scoretext, ((self.platform_x - self.scoretext.get_width()) / 2,
-        (int(self.wy - 2 * (self.wy / 20) - self.ball_radius * self.wy) - self.scoretext.get_height()) / 2 - 30))
+        self.scoretext = self.font.render("Score: " + str(math.floor(self.score)), True, (255, 255, 255))
+        self.screen.blit(self.scoretext, (0, (self.wy - self.scoretext.get_height())))
+        
+        self.balltext = self.font.render("Balls left: " + str(math.floor(self.ballcount)), True, (255, 255, 255))
+        self.screen.blit(self.balltext, ((self.wx-self.balltext.get_width()), (self.wy - self.balltext.get_height())))
 
         
         # Draw ball
@@ -248,7 +251,7 @@ class Game:
                 self.screen.blit(self.gameovertext, ((self.wx - self.gameovertext.get_width()) / 2,
                     (self.wy - self.gameovertext.get_height()) / 2))  # more sketchy code
                 self.screen.blit(self.gameovertext2, ((self.wx - self.gameovertext2.get_width()) / 2,
-                    (self.wy - self.gameovertext2.get_height()) / 2 + 30))  
+                    (self.wy - self.gameovertext2.get_height()) / 2 + int(self.wy/16)))  
         
         pygame.display.flip()
 
