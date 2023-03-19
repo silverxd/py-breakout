@@ -149,7 +149,7 @@ class Game:
             self.ball_move_y = self.ball_speed
 
         # Brick collision
-        # Millise brick kohal ma olen?
+        # Millise bricki kohal ma olen?
         ball_brick_grid_x = self.ball_x // 0.1
         ball_brick_grid_y = self.ball_y // 0.05
         for block in self.blocks:
