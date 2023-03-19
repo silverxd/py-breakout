@@ -104,12 +104,21 @@ class Game:
         
         self.end_surface.set_alpha(0)
         
+    
     def game_restart(self):
         self.score = 0
         self.blocklevel = 0
         self.gamelevel = 3
+        self.ballcount = 3
         self.game_start()
 
+    def softrestart(self):
+        self.gamestate = 'waitingtostart'
+        self.ball_x = 0.5
+        self.ball_y = 0.5
+        self.balltimer = 0
+        self.ball_move_x = 0
+        self.ball_move_y = 0
 
     def update(self):
         self.platform_p = clamp(self.platform_p + (self.move_x / 1000), 0, (1 - self.platform_width))
@@ -118,9 +127,12 @@ class Game:
 
         # you missed the platform dumbass
         if self.ball_y > 1 - self.ball_radius:
-            self.gamestate = 'ending'
-            if self.end_counter == 1:
-                print('e')
+            self.ballcount -= 1
+            self.softrestart()
+            if self.ballcount == 0:
+                self.gamestate = 'ending'
+                if self.end_counter == 1:
+                    print('e')
 
         # Ball collision with platform
         platform_height_px = int(self.wy - 2 * (self.wy / 20) - self.ball_radius * self.wy)
