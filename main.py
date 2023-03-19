@@ -44,7 +44,7 @@ class Game:
         self.ball_speed = 7
         self.ball_radius = 0.015
 
-        self.game_start()
+        self.game_restart() # goofy but whatever
         
         # Blocks
         self.blocks = []
@@ -65,7 +65,7 @@ class Game:
                 if event.key == pygame.K_d:
                     self.move_x = +self.platform_speed  
                 if (event.key in [pygame.K_SPACE, pygame.K_RETURN]) and self.gamestate == "ending":  # RESTART!
-                    self.game_start()
+                    self.game_restart()
                     print("restarting!")
 
             if event.type == pygame.KEYUP:
@@ -78,8 +78,7 @@ class Game:
                 self.end_surface.fill((255, 0, 0))
                 
     def game_start(self):
-        self.blocklevel = 0
-        self.gamelevel = 3
+        
         self.end_counter = 0
         self.gamestate = 'waitingtostart'
         
@@ -94,7 +93,7 @@ class Game:
         self.balltimer = 0
         self.ball_move_x = 0
         self.ball_move_y = 0
-        self.score = 0
+
 
         # Blocks
         self.blocks = []
@@ -104,6 +103,13 @@ class Game:
         # self.block_padding = 5
         
         self.end_surface.set_alpha(0)
+        
+    def game_restart(self):
+        self.score = 0
+        self.blocklevel = 0
+        self.gamelevel = 3
+        self.game_start()
+
 
     def update(self):
         self.platform_p = clamp(self.platform_p + (self.move_x / 1000), 0, (1 - self.platform_width))
@@ -162,8 +168,12 @@ class Game:
                 self.blocks.remove(block)
                 self.ball_move_y = -self.ball_move_y
             
-            # if self.blocks.size() == 0:
-            #     self.
+            if len(self.blocks) == 0:
+                if self.gamelevel in range(3, 6):
+                    self.gamelevel += 1
+                    self.game_start()
+                else:
+                    self.game_start()
         
         pass
         
@@ -190,7 +200,7 @@ class Game:
         self.scoretext = self.font.render("Score : " + str(math.floor(self.score)), True, (255, 255, 255))
         self.screen.blit(self.scoretext, ((self.platform_x - self.scoretext.get_width()) / 2,
         (int(self.wy - 2 * (self.wy / 20) - self.ball_radius * self.wy) - self.scoretext.get_height()) / 2 - 30))
-               
+
         
         # Draw ball
         
@@ -224,9 +234,9 @@ class Game:
                 # self.window.blit(self.scoreText, ((self.wx - self.scoreText.get_width()) / 2,
                 #                                   (self.wy - self.scoreText.get_height()) / 2 - 30))  # sketchy AF code but it works
                 self.screen.blit(self.gameovertext, ((self.wx - self.gameovertext.get_width()) / 2,
-                                                     (self.wy - self.gameovertext.get_height()) / 2))  # more sketchy code
+                    (self.wy - self.gameovertext.get_height()) / 2))  # more sketchy code
                 self.screen.blit(self.gameovertext2, ((self.wx - self.gameovertext2.get_width()) / 2,
-                                                      (self.wy - self.gameovertext2.get_height()) / 2 + 30))  
+                    (self.wy - self.gameovertext2.get_height()) / 2 + 30))  
         
         pygame.display.flip()
 
