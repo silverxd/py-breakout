@@ -124,7 +124,10 @@ class Game:
             print("Platform collision!")
             self.ball_move_y = -self.ball_move_y
             if self.ball_x < self.platform_p + (self.platform_width / 2):
-                self.ball_move_x = -self.ball_move_x
+                self.ball_move_x -= 60*abs(self.ball_x - self.platform_p - (self.platform_width / 2))
+            else:
+                self.ball_move_x += 60*abs(self.ball_x - self.platform_p - (self.platform_width / 2))
+            
 
         # Wall collision
         if self.ball_x <= self.ball_radius or self.ball_x >= 1-self.ball_radius:
@@ -158,6 +161,9 @@ class Game:
                 self.score += 1
                 self.blocks.remove(block)
                 self.ball_move_y = -self.ball_move_y
+            
+            # if self.blocks.size() == 0:
+            #     self.
         
         pass
         
