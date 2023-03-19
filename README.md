@@ -7,11 +7,11 @@ We decided to use [an amazing base](https://raw.githubusercontent.com/blimly/Pyt
 - [x] Variable resolution
 - [x] Add some colors
 - [x] Platform movement
-- [ ] Collision detection
-- [ ] Add primitive endscreen
+- [x] Collision detection
+- [x] Add primitive endscreen
 - [ ] Make everything look prettier
 - [x] Uncap framerate
-- [ ] Calculate score (for each player)
+- [x] Calculate score (for each player)
 - [ ] Proper endscreen
 - [ ] Add audio
 - [ ] Add online multiplayer
