@@ -89,7 +89,7 @@ class Game:
         self.move_x = 0
 
         # Balls
-        self.ball_x = 0.5
+        self.ball_x = 0.025
         self.ball_y = 0.5
         self.balltimer = 0
         self.ball_move_x = 0
@@ -115,7 +115,7 @@ class Game:
 
     def softrestart(self):
         self.gamestate = 'waitingtostart'
-        self.ball_x = 0.5
+        self.ball_x = 0.025
         self.ball_y = 0.5
         self.balltimer = 0
         self.ball_move_x = 0
