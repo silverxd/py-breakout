@@ -279,8 +279,8 @@ class Game:
                     (self.wy - self.gameovertext2.get_height()) / 2 + int(self.wy/16)))  
         
         if self.gamestate == 'pause':
-            self.pausetext = self.font.render('Paused!', True, (255, 255, 255))
-            self.pausetext2 = self.font.render('Press ENTER or SPACE to unpause!', True, (255, 255, 255))
+            self.pausetext = self.font.render('Game paused!', True, (255, 255, 255))
+            self.pausetext2 = self.font.render('Press ENTER or SPACE to unpause', True, (255, 255, 255))
             self.screen.blit(self.pausetext, ((self.wx - self.pausetext.get_width()) / 2,
                 (self.wy - self.pausetext.get_height()) / 2))
             self.screen.blit(self.pausetext2, ((self.wx - self.pausetext2.get_width()) / 2,
