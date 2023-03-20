@@ -52,21 +52,38 @@ class Game:
             for x in range (0, 10):
                 self.blocks.append(Block(x, y, self.returnColor(y)))
         # self.block_padding = 5
+        
+        # Saving pausing variables
+        
+        self.pause_gamestate = ''
+        self.pause_ball_x = 0
+        self.pause_ball_y = 0
 
     def input(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
             if event.type == pygame.KEYDOWN:
-                if event.key in [pygame.K_q, pygame.K_ESCAPE]:
+                if event.key in [pygame.K_q]:
                     self.running = False
-                if event.key == pygame.K_a:
+                if event.key == pygame.K_a and self.gamestate in ['waitingtostart', 'ingame']:
                     self.move_x = -self.platform_speed
-                if event.key == pygame.K_d:
+                if event.key == pygame.K_d and self.gamestate in ['waitingtostart', 'ingame']:
                     self.move_x = +self.platform_speed  
                 if (event.key in [pygame.K_SPACE, pygame.K_RETURN]) and self.gamestate == "ending":  # RESTART!
                     self.game_restart()
                     print("restarting!")
+                if event.key == pygame.K_ESCAPE and self.gamestate in ['waitingtostart', 'ingame']:
+                    self.pause_gamestate = self.gamestate
+                    self.gamestate = 'pause'
+                    self.pause_ball_x = self.ball_move_x
+                    self.pause_ball_y = self.ball_move_y
+                    self.ball_move_x = 0
+                    self.ball_move_y = 0
+                if (event.key in [pygame.K_SPACE, pygame.K_RETURN]) and self.gamestate == 'pause':
+                    self.gamestate = self.pause_gamestate
+                    self.ball_move_x = self.pause_ball_x
+                    self.ball_move_y = self.pause_ball_y
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a and self.move_x == -self.platform_speed or event.key == pygame.K_d and self.move_x == self.platform_speed:
@@ -95,7 +112,6 @@ class Game:
         self.ball_move_x = 0
         self.ball_move_y = 0
 
-
         # Blocks
         self.blocks = []
         for y in range (0, self.gamelevel):
@@ -104,8 +120,7 @@ class Game:
         # self.block_padding = 5
         
         self.end_surface.set_alpha(0)
-        
-    
+
     def game_restart(self):
         self.score = 0
         self.blocklevel = 0
@@ -247,7 +262,6 @@ class Game:
             )
         
         
-        
         if self.gamestate == "ending":
             self.ball_move_x = 0
             self.ball_move_y = 0
@@ -263,6 +277,14 @@ class Game:
                     (self.wy - self.gameovertext.get_height()) / 2))  # more sketchy code
                 self.screen.blit(self.gameovertext2, ((self.wx - self.gameovertext2.get_width()) / 2,
                     (self.wy - self.gameovertext2.get_height()) / 2 + int(self.wy/16)))  
+        
+        if self.gamestate == 'pause':
+            self.pausetext = self.font.render('Paused!', True, (255, 255, 255))
+            self.pausetext2 = self.font.render('Press ENTER or SPACE to unpause!', True, (255, 255, 255))
+            self.screen.blit(self.pausetext, ((self.wx - self.pausetext.get_width()) / 2,
+                (self.wy - self.pausetext.get_height()) / 2))
+            self.screen.blit(self.pausetext2, ((self.wx - self.pausetext2.get_width()) / 2,
+                (self.wy - self.pausetext2.get_height()) / 2 + int(self.wy/16))) 
         
         pygame.display.flip()
 
