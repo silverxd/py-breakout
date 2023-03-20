@@ -142,11 +142,22 @@ class Game:
         if ball_platform_collision_y and ball_platform_collision_x:
             print("Platform collision!")
             self.ball_move_y = -self.ball_move_y
+
+            self.newballspeed = 60*abs(self.ball_x - self.platform_p - (self.platform_width / 2))
+
             if self.ball_x < self.platform_p + (self.platform_width / 2):
-                self.ball_move_x -= 60*abs(self.ball_x - self.platform_p - (self.platform_width / 2))
+                self.ball_move_x -= self.newballspeed
+                if abs(self.ball_move_x) < 0.6 * self.ball_speed:
+                    print(f'le slow collision detected, old speed: {self.ball_move_x}')
+                    self.ball_move_x = math.copysign(1, self.ball_move_x) * 0.6 * self.ball_speed
+
+                    print(f'speed updated to {self.ball_move_x}')
             else:
-                self.ball_move_x += 60*abs(self.ball_x - self.platform_p - (self.platform_width / 2))
-            
+                self.ball_move_x += self.newballspeed
+                if abs(self.ball_move_x) < 0.6 * self.ball_speed:
+                    print(f'le slow collision detected, old speed: {self.ball_move_x}')
+                    self.ball_move_x = math.copysign(1, self.ball_move_x) * 0.6 * self.ball_speed
+                    print(f'speed updated to {self.ball_move_x}')            
 
         # Wall collision
         if self.ball_x <= self.ball_radius or self.ball_x >= 1-self.ball_radius:
